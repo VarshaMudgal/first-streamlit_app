@@ -53,7 +53,7 @@ except URLError as e:
 #Output it to the screen as a table
 
 #Move the Fruit Load List Query and Load into a Button Action
-streamlit.header("The Fruit List Contains:")
+streamlit.header("View Our Fruit List - Add Your Favorites")
 #Snowflake related functions
 def get_fruit_load_list():
   with my_cnx.cursor() as my_cur:

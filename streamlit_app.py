@@ -66,16 +66,23 @@ if streamlit.button('Get Fruit Load List'):
   my_data_rows = get_fruit_load_list()
   streamlit.dataframe(my_data_rows)
   
-#my_cur = my_cnx.cursor()
-#my_data_rows = my_cur.fetchall()
-
-#don't execute anything past this line while I am working to fix
-streamlit.stop()
 
 #Allow the end user to add some fruits to the list
-streamlit.header("This is the challenge Fruit List:")
-add_my_fruit = streamlit.text_input('What fruit challenge would you like to add?','Jackfruit')
-streamlit.write('Thanks for adding',add_my_fruit)
+def insert_row_snowflake(new_fruit):
+  with my_cnx.cursor() as my_cur:
+       my_cur.execute("Insert into fruit_load_list values ('from streamlit')")
+       return "Thanks for adding " + new_fruit
+      
+add_my_fruit = streamlit.text_input('What fruit would you like to add?')
+if streamlit.button('Add a Fruit to the List'):
+  my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+  back_from_function = insert_row_snowflake(add_my_fruit)
+  streamlit.text(back_from_function)
 
 #Snowflake Control of the flow addition 
-my_cur.execute("insert into fruit_load_list values('from Streamlit')")
+#my_cur.execute("insert into fruit_load_list values('from Streamlit')")
+
+#don't execute anything past this line while I am working to fix
+#streamlit.stop()
+#my_cur = my_cnx.cursor()
+#my_data_rows = my_cur.fetchall()
